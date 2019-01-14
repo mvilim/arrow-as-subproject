@@ -1,0 +1,81 @@
+diff --git a/cpp/CMakeLists.txt b/cpp/CMakeLists.txt
+index 08868af8..7f9a7799 100644
+--- a/cpp/CMakeLists.txt
++++ b/cpp/CMakeLists.txt
+@@ -47,6 +47,8 @@ message(STATUS "Arrow version: "
+   "${ARROW_VERSION_MAJOR}.${ARROW_VERSION_MINOR}.${ARROW_VERSION_PATCH} "
+   "(full: '${ARROW_VERSION}')")
+ 
++set(ARROW_SOURCE_DIR ${PROJECT_SOURCE_DIR})
++set(ARROW_BINARY_DIR ${PROJECT_BINARY_DIR})
+ 
+ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
+ 
+diff --git a/cpp/src/arrow/dbi/hiveserver2/thrift/CMakeLists.txt b/cpp/src/arrow/dbi/hiveserver2/thrift/CMakeLists.txt
+index be689f93..ed90fe8f 100644
+--- a/cpp/src/arrow/dbi/hiveserver2/thrift/CMakeLists.txt
++++ b/cpp/src/arrow/dbi/hiveserver2/thrift/CMakeLists.txt
+@@ -78,7 +78,7 @@ endfunction(HS2_THRIFT_GEN)
+ 
+ message("Using Thrift compiler: ${THRIFT_COMPILER}")
+ 
+-set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/src)
++set(OUTPUT_DIR ${ARROW_BINARY_DIR}/src)
+ file(MAKE_DIRECTORY ${OUTPUT_DIR})
+ 
+ add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ErrorCodes.thrift
+diff --git a/cpp/src/arrow/flight/CMakeLists.txt b/cpp/src/arrow/flight/CMakeLists.txt
+index 2feaee11..db2092e8 100644
+--- a/cpp/src/arrow/flight/CMakeLists.txt
++++ b/cpp/src/arrow/flight/CMakeLists.txt
+@@ -29,8 +29,8 @@ SET(ARROW_FLIGHT_STATIC_LINK_LIBS
+ 
+ # TODO(wesm): Protobuf shared vs static linking
+ 
+-set(FLIGHT_PROTO_PATH "${CMAKE_SOURCE_DIR}/../format")
+-set(FLIGHT_PROTO ${CMAKE_SOURCE_DIR}/../format/Flight.proto)
++set(FLIGHT_PROTO_PATH "${ARROW_SOURCE_DIR}/../format")
++set(FLIGHT_PROTO ${ARROW_SOURCE_DIR}/../format/Flight.proto)
+ 
+ set(FLIGHT_GENERATED_PROTO_FILES
+   "${CMAKE_CURRENT_BINARY_DIR}/Flight.pb.cc"
+diff --git a/cpp/src/arrow/ipc/CMakeLists.txt b/cpp/src/arrow/ipc/CMakeLists.txt
+index 422e72e2..79675825 100644
+--- a/cpp/src/arrow/ipc/CMakeLists.txt
++++ b/cpp/src/arrow/ipc/CMakeLists.txt
+@@ -53,17 +53,17 @@ set_source_files_properties(Message_generated.h PROPERTIES GENERATED TRUE)
+ set_source_files_properties(feather_generated.h PROPERTIES GENERATED TRUE)
+ set_source_files_properties(File_generated.h PROPERTIES GENERATED TRUE)
+ 
+-set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/src/arrow/ipc)
++set(OUTPUT_DIR ${ARROW_BINARY_DIR}/src/arrow/ipc)
+ set(FBS_OUTPUT_FILES
+   "${OUTPUT_DIR}/File_generated.h"
+   "${OUTPUT_DIR}/Message_generated.h"
+   "${OUTPUT_DIR}/feather_generated.h")
+ 
+ set(FBS_SRC
+-  ${CMAKE_SOURCE_DIR}/../format/Message.fbs
+-  ${CMAKE_SOURCE_DIR}/../format/File.fbs
+-  ${CMAKE_SOURCE_DIR}/../format/Schema.fbs
+-  ${CMAKE_SOURCE_DIR}/../format/Tensor.fbs
++  ${ARROW_SOURCE_DIR}/../format/Message.fbs
++  ${ARROW_SOURCE_DIR}/../format/File.fbs
++  ${ARROW_SOURCE_DIR}/../format/Schema.fbs
++  ${ARROW_SOURCE_DIR}/../format/Tensor.fbs
+   ${CMAKE_CURRENT_SOURCE_DIR}/feather.fbs)
+ 
+ foreach(FIL ${FBS_SRC})
+diff --git a/cpp/src/plasma/CMakeLists.txt b/cpp/src/plasma/CMakeLists.txt
+index 2be5740b..f4a90efe 100644
+--- a/cpp/src/plasma/CMakeLists.txt
++++ b/cpp/src/plasma/CMakeLists.txt
+@@ -40,7 +40,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-conversion")
+ # Compile flatbuffers
+ 
+ set(PLASMA_FBS_SRC "${CMAKE_CURRENT_LIST_DIR}/format/plasma.fbs" "${CMAKE_CURRENT_LIST_DIR}/format/common.fbs")
+-set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/src/plasma)
++set(OUTPUT_DIR ${ARROW_BINARY_DIR}/src/plasma)
+ 
+ set(PLASMA_FBS_OUTPUT_FILES
+   "${OUTPUT_DIR}/common_generated.h"
